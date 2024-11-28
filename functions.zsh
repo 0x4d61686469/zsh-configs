@@ -26,7 +26,7 @@ nice_naabu(){
 
 
 
-getptr(){
+get-ptr(){
 	input=""
 	while read line && [["$line" != "END_OF_INPUT"]]; do
 		input="$input$line\n"
@@ -47,6 +47,14 @@ crtsh(){
 END
 )
 	echo "$query" | psql -t -h crt.sh -p 5432 -U guest certwatch | sed 's/ //g' | grep -E ".*.\.$1" | sed 's/*\.//g' | tr '[:upper:]' '[:lower:]'	| sort -u
+}
+
+
+
+github_scan(){
+	DOMAIN=$1
+	q=$(echo $DOMAIN | sed -e 's/\./\\\./g')
+	src search -json '([a-z\-]+)?:?(\/\/)?([a-zA-Z0-9]+[.])+('${q}') count:5000 fork:yes archived:yes' | jq -r '.Results[] | .lineMatches[].preview, .file.path' | grep -oiE '([a-zA-Z0-9]+[.])+('${q}')' | awk '{ print tolower($0) }' | sort -u
 }
 
 
