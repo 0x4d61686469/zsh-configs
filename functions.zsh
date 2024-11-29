@@ -5,7 +5,7 @@ get_certificate(){
 
 
 get_certificate_nuclei(){
-	echo $1 | nuclei -t ~/nuclei-templates/ssl/ssl-dns-names.yaml -silent -j | jq -r '.["extracted-results"][]' | sort -u
+	nuclei -t ~/nuclei-templates/ssl/ssl-dns-names.yaml -silent -j | jq -r '.["extracted-results"][]' | sort -u
 }
 
 
@@ -18,7 +18,7 @@ get_asn(){
 
 nice_naabu(){
 	input=""
-	while read line && [["$line" != "END_OF_INPUT"]]; do
+	while read line && [[ "$line" != "END_OF_INPUT" ]]; do
 		input="$input$line\n"
 	done
 	echo $input | naabu -p 80,8000,8080,8880,2052,2082,2086,2095,443,2053,2083,2087,2096,8443,10443 -silent 
@@ -26,9 +26,9 @@ nice_naabu(){
 
 
 
-get-ptr(){
+get_ptr(){
 	input=""
-	while read line && [["$line" != "END_OF_INPUT"]]; do
+	while read line && [[ "$line" != "END_OF_INPUT" ]]; do
 		input="$input$line\n"
 	done
 	echo $input | dnsx -silent -resp-only -ptr
