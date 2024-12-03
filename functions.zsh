@@ -63,3 +63,30 @@ github_scan(){
 fback() {                  
 python3 ~/bugbounty-tools/BackupKiller/fback.py "$@"
 }
+
+
+
+
+robofinder() {
+python3 ~/bugbounty-tools/robofinder/robofinder.py "$@"
+}
+
+
+
+wlist_maker(){
+	seq 1 100 > list.tmp
+	echo $1 >> list.tmp
+	seq 101 300 >> list.tmp
+	echo $1 >> list.tmp
+	seq 301 600 >> list.tmp
+}
+
+
+
+nice_wayback(){
+	while read line
+	do
+		host=$(echo $line | unfurl format %d)
+		echo "$line" | waybackurls | grep -Eiv '\.(css|jpg|jpeg|png|svg|img|gif|exe|mp4|flv|pdf|doc|ogv|webm|wmv|webp|mov|mp3|m4a|m4p|ppt|pptx|scss|tif|tiff|otf|woff|woff2|bmp|ico|eot|htc|swf|rtf|image|rf)' | sort -u | tee ${host}.waybackyrls
+		done < "${1:-/dev/stdin}"
+}
