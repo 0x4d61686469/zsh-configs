@@ -60,3 +60,6 @@ github_scan(){
 
 
 
+fback() {                  
+python3 ~/bugbounty-tools/BackupKiller/fback.py "$@"
+}
