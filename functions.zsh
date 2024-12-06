@@ -5,7 +5,7 @@ get_certificate(){
 
 
 get_certificate_nuclei(){
-	nuclei -t ~/nuclei-templates/ssl/ssl-dns-names.yaml -silent -j | jq -r '.["extracted-results"][]' | sort -u
+	nuclei -t ~/bugbounty-tools/nuclei-private-templates/ssl-dns-names.yaml -silent -j | jq -r '.["extracted-results"][]' | sort -u
 }
 
 
