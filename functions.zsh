@@ -90,6 +90,8 @@ nice_wayback(){
 		echo "$line" | waybackurls | grep -Eiv '\.(css|jpg|jpeg|png|svg|img|gif|exe|mp4|flv|pdf|doc|ogv|webm|wmv|webp|mov|mp3|m4a|m4p|ppt|pptx|scss|tif|tiff|otf|woff|woff2|bmp|ico|eot|htc|swf|rtf|image|rf)' | sort -u | tee ${host}.waybackyrls
 		done < "${1:-/dev/stdin}"
 }
+
+
 x9() {                  
 python3 ~/bugbounty-tools/X9/x9.py "$@"
 }
@@ -107,3 +109,6 @@ extract_js_files() {
     grep -E '\.js($|\?)' "$input_file"
 }
 
+linkfinder(){
+python3 ~/bugbounty-tools/LinkFinder/linkfinder.py "$@"
+}
