@@ -93,3 +93,17 @@ nice_wayback(){
 x9() {                  
 python3 ~/bugbounty-tools/X9/x9.py "$@"
 }
+
+
+extract_js_files() {
+    local input_file="$1"
+
+    if [[ ! -f $input_file ]]; then
+        echo "File not found: $input_file"
+        return 1
+    fi
+
+    # Extract lines ending with .js and display them
+    grep -E '\.js($|\?)' "$input_file"
+}
+
