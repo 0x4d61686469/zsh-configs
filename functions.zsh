@@ -118,3 +118,9 @@ python3 ~/bugbounty-tools/LinkFinder/linkfinder.py "$@"
 wayback_downloader() {
 python3 ~/bugbounty-tools/wayback_downloader/wayback_downloader.py "$@"
 }
+
+
+
+js_param_extractor() {
+python3 ~/bugbounty-tools/js_param_extractor/js-param-extractor.py "$@"
+}
