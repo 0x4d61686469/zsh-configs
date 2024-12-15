@@ -109,6 +109,12 @@ extract_js_files() {
     grep -E '\.js($|\?)' "$input_file"
 }
 
+
 linkfinder(){
 python3 ~/bugbounty-tools/LinkFinder/linkfinder.py "$@"
+}
+
+
+wayback_downloader() {
+python3 ~/bugbounty-tools/wayback_downloader/wayback_downloader.py "$@"
 }
