@@ -142,3 +142,13 @@ masscan $1 --open --ports 80,443,444,1443,1455,2000,2020,2052,2053,2082,2083,208
 nice_masscan_list() {
 masscan -iL $1 --open --ports 80,443,444,1443,1455,2000,2020,2052,2053,2082,2083,2086,2087,2095,2096,2222,3000,3003,3030,3300,3306,3333,4000,4040,4400,4440,4443,4444,4900,5000,5030,5050,5432,5500,5555,6000,6100,6666,7000,7007,7008,7700,7777,8000,8080,8090,8100,8180,8200,8300,8400,8443,8500,8600,8700,8800,8880,8888,8899,9000,9009,9040,9050,9080,9090,9100,9200,9300,9400,9500,9898,9900,9999,10443,27017 -oL masscan-res.txt && grep "open" masscan-res.txt | awk '{print $4 ":" $3}'
 }
+
+
+httpx_full() {
+input=""
+while read line && [[ "$line" != "END_OF_INPUT" ]]
+do
+input="$input$line\n"
+done
+echo $input | httpx -silent -follow-host-redirect -title -status-code -cdn -tech-detect -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" -H "Referer: https://$input" -threads 1
+}
