@@ -170,7 +170,7 @@ curl -s "https://www.abuseipdb.com/whois/$1" -H "User-agent: Chrome" | grep -E '
 }
 
 dns_wlist_maker() {
-cat $1 | dnsgen -w $2 | sort -u > /tmp/dnsgen.tmp
+cat $1 | dnsgen -w $2 - | sort -u > /tmp/dnsgen.tmp
 altdns -i $1 -w $2 -o /tmp/altdns.tmp
 cat /tmp/altdns.tmp /tmp/dnsgen.tmp > dnsbrute_wordlist.txt
 rm -rf /tmp/dnsgen.tmp
