@@ -150,7 +150,7 @@ while read line && [[ "$line" != "END_OF_INPUT" ]]
 do
 input="$input$line\n"
 done
-echo $input | httpx -silent -follow-host-redirect -title -status-code -cdn -tech-detect -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" -H "Referer: https://$input" -threads 1
+echo $input | httpx -silent -follow-host-redirects -title -status-code -cdn -tech-detect -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" -H "Referer: https://$input" -threads 1
 }
 
 get_subs() {
