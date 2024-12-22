@@ -152,3 +152,13 @@ input="$input$line\n"
 done
 echo $input | httpx -silent -follow-host-redirect -title -status-code -cdn -tech-detect -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" -H "Referer: https://$input" -threads 1
 }
+
+get_subs() {
+domain=$1
+echo "[crtsh]"
+crtsh $domain | grep -v "*" | sort -u > ${ddomain}.subs
+echo "[Subfinder]"
+subfinder -d $domain -all -silent | anew ${domain}.subs
+echo "[abuseipdb]"
+abuseipdb $domain | anew ${domain}.subs
+}
