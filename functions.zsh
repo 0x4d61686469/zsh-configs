@@ -155,6 +155,7 @@ echo $input | httpx -silent -follow-host-redirect -title -status-code -cdn -tech
 
 get_subs() {
 domain=$1
+echo "[Domain] = $1"
 echo "[crtsh]"
 crtsh $domain | grep -v "*" | sort -u > ${ddomain}.subs
 echo "[Subfinder]"
