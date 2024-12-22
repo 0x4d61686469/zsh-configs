@@ -162,3 +162,8 @@ subfinder -d $domain -all -silent | anew ${domain}.subs
 echo "[abuseipdb]"
 abuseipdb $domain | anew ${domain}.subs
 }
+
+
+abuseipdb() {
+curl -s "https://www.abuseipdb.com/whois/$1" -H "User-agent: Chrome" | grep -E '<li>\w.*</li>' | sed -E 's/<\/?li>//g' | sed -e "s/$/.$1/"
+}
