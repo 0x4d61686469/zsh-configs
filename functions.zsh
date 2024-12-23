@@ -205,7 +205,7 @@ done
 
 
 
-get_asn_datails() {
+get_asn_details() {
 input=""
 while read line
 do
