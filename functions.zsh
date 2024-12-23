@@ -174,10 +174,20 @@ abuseipdb() {
 curl -s "https://www.abuseipdb.com/whois/$1" -H "User-agent: Chrome" | grep -E '<li>\w.*</li>' | sed -E 's/<\/?li>//g' | sed -e "s/$/.$1/"
 }
 
+
+
 dns_wlist_maker() {
 cat $1 | dnsgen -w $2 - | sort -u > /tmp/dnsgen.tmp
-altdns -i $1 -w $2 -o /tmp/altdns.tmp
+altdns_fix -i $1 -w $2 -o /tmp/altdns.tmp
 cat /tmp/altdns.tmp /tmp/dnsgen.tmp > dnsbrute_wordlist.txt
 rm -rf /tmp/dnsgen.tmp
 rm -rf /tmp/altdns.tmp
+}
+
+
+
+altdns_fix() {
+source ~/bugbounty-tools/altdns/env/bin/activate
+altdns "$@"
+deactivate
 }
