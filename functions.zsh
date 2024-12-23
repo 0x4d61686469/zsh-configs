@@ -201,3 +201,14 @@ do
 curl -s https://api.bgpview.io/ip/$line | jq -r ".data.prefixes[0].asn.asn"
 done
 }
+
+
+
+
+get_asn_datails() {
+input=""
+while read line
+do
+curl -s https://api.bgpview.io/asn/$line/prefixes | jq -r ".data.ipv4_prefixes[0] | {prefix: .prefix, name: .description}"
+done
+}
