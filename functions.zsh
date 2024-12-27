@@ -212,3 +212,21 @@ do
 curl -s https://api.bgpview.io/asn/$line/prefixes | jq -r ".data.ipv4_prefixes[0] | {prefix: .prefix, name: .description}"
 done
 }
+
+
+
+param_maker() {
+	current=$PWD
+	cp $1 /tmp/ &> /dev/null || return 0
+	cd /tmp/ && rm -rf params_* &> /dev/null
+	split -l 25 -d $1 params_
+	for file in $(ls params_*)
+	do
+		echo -n "?" && cat $file | while read line
+		do
+			echo -n "$line=$2&"
+		done
+		echo ""
+	done
+	cd $current
+}
