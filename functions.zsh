@@ -227,19 +227,28 @@ done
 
 
 param_maker() {
-	current=$PWD
-	cp $1 /tmp/ &> /dev/null || return 0
-	cd /tmp/ && rm -rf params_* &> /dev/null
-	split -l 25 -d $1 params_
-	for file in $(ls params_*)
+	filename="$1"
+	value="$2"
+	counter=0
+	query_string="?"
+	while IFS= read -r keyword
 	do
-		echo -n "?" && cat $file | while read line
-		do
-			echo -n "$line=$2&"
-		done
-		echo ""
-	done
-	cd $current
+		if [ -n "$keyword" ]
+		then
+			counter=$((counter+1))
+			query_string="${query_string}${keyword}=${value}${counter}&"
+		fi
+		if [ $counter -eq 25 ]
+		then
+			echo "${query_string%?}"
+			query_string="?"
+			counter=0
+		fi
+	done < "$filename"
+	if [ $counter -gt 0 ]
+	then 
+		echo "${query_string%?}"
+	fi
 }
 
 
