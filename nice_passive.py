@@ -73,7 +73,8 @@ def run_nice_passive(domain):
     commands = [
         f"echo https://{domain}/ | tee {temp_file}",
         f"echo {domain} | waybackurls | sort -u | tee -a {temp_file}",
-        f"echo {domain} | gau --threads 1 --subs | sort -u | tee -a {temp_file}"
+        f"gau {domain} --threads 1 --subs | sort -u | tee -a {temp_file}",
+        f"flinks -gwr -u {domain} | tee -a {temp_file}"
     ]
     
     # running commands
