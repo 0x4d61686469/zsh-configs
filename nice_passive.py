@@ -69,11 +69,11 @@ def run_nice_passive(domain):
     
     temp_file = generate_temp_file()
     print(f"{colors.GRAY}gathering URLs passively for: {domain}{colors.GRAY}")
-    
+    #add uro for mass hunt : echo {domain} | waybackurls | sort -u | uro | tee -a {temp_file} , echo {domain} | gau --threads 1 --subs | sort -u | uro | tee -a {temp_file}
     commands = [
         f"echo https://{domain}/ | tee {temp_file}",
-        f"echo {domain} | waybackurls | sort -u | uro | tee -a {temp_file}",
-        f"echo {domain} | gau --threads 1 --subs | sort -u | uro | tee -a {temp_file}"
+        f"echo {domain} | waybackurls | sort -u | tee -a {temp_file}",
+        f"echo {domain} | gau --threads 1 --subs | sort -u | tee -a {temp_file}"
     ]
     
     # running commands
@@ -110,5 +110,5 @@ if __name__ == "__main__":
             for line in file:
                 domain = get_hostname(line)
                 run_nice_passive(domain)
-            else:    
-                run_nice_passive(get_hostname(input))
+    else:    
+        run_nice_passive(get_hostname(input))
