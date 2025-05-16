@@ -38,3 +38,4 @@ s0md3v/uro
 0x4d61686469/wayback_downloader
 Q0120S/X9
 s0md3v/XSStrike
+0x4d61686469/nuclei-private-templates
