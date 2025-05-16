@@ -2,30 +2,37 @@
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
 tools=(nmap git zsh curl wget jq htop go masscan)
-go_tools=(
-    "github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest"
-    "github.com/projectdiscovery/naabu/v2/cmd/naabu@latest"
-    "github.com/projectdiscovery/dnsx/cmd/dnsx@latest"
-    "github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"
-    "github.com/projectdiscovery/httpx/cmd/httpx@latest"
-    "github.com/tomnomnom/unfurl@latest"
-    "github.com/tomnomnom/anew@latest"
-    "github.com/tomnomnom/waybackurls@latest"
-    "github.com/1ndianl33t/src@latest"
-)
 
-declare -A repos=(
-    ["X9"]="https://github.com/Sh1Yo/X9"
-    ["BackupKiller"]="https://github.com/0xKayala/BackupKiller"
-    ["robofinder"]="https://github.com/devanshbatham/robofinder"
-    ["LinkFinder"]="https://github.com/GerbenJavado/LinkFinder"
-    ["wayback_downloader"]="https://github.com/hisxo/wayback_downloader"
-    ["param_extractor"]="https://github.com/devanshbatham/param-extractor"
-    ["altdns"]="https://github.com/infosec-au/altdns"
-)
+declare -A repos
+declare -a go_tools
+
+load_repos() {
+    if [[ ! -f repos.txt ]]; then
+        echo -e "${RED}repos.txt not found!${NC}"
+        return 1
+    fi
+    repos=()
+    while IFS= read -r line; do
+        [[ -z "$line" || "$line" =~ ^# ]] && continue
+        key=$(basename "$line")
+        repos["$key"]="$line"
+    done < repos.txt
+}
+
+load_go_tools() {
+    if [[ ! -f go_tools.txt ]]; then
+        echo -e "${RED}go_tools.txt not found!${NC}"
+        return 1
+    fi
+    go_tools=()
+    while IFS= read -r line; do
+        [[ -z "$line" || "$line" =~ ^# ]] && continue
+        go_tools+=("$line")
+    done < go_tools.txt
+}
 
 detect_package_manager() {
     if command -v apt &> /dev/null; then echo "apt"
@@ -38,7 +45,7 @@ detect_package_manager() {
 }
 
 check_status() {
-    echo -e "\nChecking essential tools:"
+    echo -e "\nChecking system tools:"
     for tool in "${tools[@]}"; do
         if command -v "$tool" &> /dev/null; then
             echo -e "${GREEN}[✓] $tool${NC}"
@@ -47,7 +54,7 @@ check_status() {
         fi
     done
 
-    echo -e "\nChecking Go-based tools:"
+    echo -e "\nChecking Go tools:"
     for tool in "${go_tools[@]}"; do
         binary=$(basename "${tool%%@*}")
         if command -v "$binary" &> /dev/null; then
@@ -59,11 +66,10 @@ check_status() {
 
     echo -e "\nChecking GitHub repos:"
     for dir in "${!repos[@]}"; do
-        target="$HOME/bugbounty-tools/$dir"
-        if [[ -d "$target" ]]; then
-            echo -e "${GREEN}[✓] $dir repo exists${NC}"
+        if [[ -d "$HOME/bugbounty-tools/$dir" ]]; then
+            echo -e "${GREEN}[✓] $dir${NC}"
         else
-            echo -e "${RED}[✗] $dir repo missing${NC}"
+            echo -e "${RED}[✗] $dir${NC}"
         fi
     done
 }
@@ -72,10 +78,10 @@ install_tools() {
     pkgmgr=$(detect_package_manager)
     if [[ $pkgmgr == "unknown" ]]; then
         echo -e "${RED}No supported package manager found!${NC}"
-        return
+        return 1
     fi
 
-    echo -e "\nInstalling common tools using $pkgmgr..."
+    echo -e "\nInstalling system tools using $pkgmgr..."
     for tool in "${tools[@]}"; do
         if ! command -v "$tool" &> /dev/null; then
             echo -e "${GREEN}Installing $tool...${NC}"
@@ -90,14 +96,14 @@ install_tools() {
     done
 
     if ! command -v go &> /dev/null; then
-        echo -e "${RED}Go not installed. Please install it manually.${NC}"
-        return
+        echo -e "${RED}Go is not installed. Please install it manually.${NC}"
+        return 1
     fi
 
     export GOPATH="$HOME/go"
     export PATH="$GOPATH/bin:$PATH"
 
-    echo -e "\nInstalling Go-based tools:"
+    echo -e "\nInstalling Go tools:"
     for tool in "${go_tools[@]}"; do
         binary=$(basename "${tool%%@*}")
         if ! command -v "$binary" &> /dev/null; then
@@ -108,15 +114,17 @@ install_tools() {
         fi
     done
 
-    echo -e "\nCloning GitHub repos into ~/bugbounty-tools:"
-    mkdir -p ~/bugbounty-tools
+    echo -e "\nCloning GitHub repos to ~/bugbounty-tools:"
+    mkdir -p "$HOME/bugbounty-tools"
     for dir in "${!repos[@]}"; do
         target="$HOME/bugbounty-tools/$dir"
+        repo_path="${repos[$dir]}"
+        repo_url="https://github.com/$repo_path.git"
         if [[ ! -d "$target" ]]; then
-            echo -e "${GREEN}Cloning ${repos[$dir]}...${NC}"
-            git clone "${repos[$dir]}" "$target"
+            echo -e "${GREEN}Cloning $repo_url...${NC}"
+            git clone "$repo_url" "$target"
         else
-            echo -e "${GREEN}[✓] $dir already cloned${NC}"
+            echo -e "${GREEN}[✓] $dir already exists${NC}"
         fi
     done
 }
@@ -133,11 +141,14 @@ export PATH=$PATH:~/zsh-configs'
     else
         echo -e "${GREEN}Adding zsh configs to .zshrc...${NC}"
         echo -e "\n# Load custom zsh configs\n$SNIPPET" >> "$ZSHRC"
-        echo -e "${GREEN}Done. Please restart your terminal or source ~/.zshrc${NC}"
+        echo -e "${GREEN}Done. Please restart your terminal or run 'source ~/.zshrc'${NC}"
     fi
 }
 
 main_menu() {
+    load_repos || return
+    load_go_tools || return
+
     echo -e "\n${GREEN}Select an option:${NC}"
     echo "1. Check missing/installed tools and repos"
     echo "2. Install missing tools and clone repos"
