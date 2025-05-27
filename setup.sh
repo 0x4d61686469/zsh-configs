@@ -9,6 +9,30 @@ tools=(nmap git zsh curl wget jq htop go masscan)
 declare -A repos
 declare -a go_tools
 
+install_x8() {
+    if command -v x8 >/dev/null; then
+        echo -e "${GREEN}[✓] x8 is already installed${NC}"
+        return 0
+    fi
+    
+    echo -e "${GREEN}Installing x8...${NC}"
+    TMP_DIR=$(mktemp -d)
+    echo -e "${GREEN}Downloading x8...${NC}"
+    if curl -L -o "$TMP_DIR/x8.gz" https://github.com/Sh1Yo/x8/releases/download/v4.3.0/x86_64-linux-x8.gz; then
+        echo -e "${GREEN}Extracting x8...${NC}"
+        gunzip "$TMP_DIR/x8.gz" &&
+        chmod +x "$TMP_DIR/x8" &&
+        echo -e "${GREEN}Moving x8 to /usr/local/bin/...${NC}"
+        sudo mv "$TMP_DIR/x8" /usr/local/bin/ &&
+        rm -rf "$TMP_DIR" &&
+        echo -e "${GREEN}✓ x8 installed successfully!${NC}"
+    else
+        echo -e "${RED}Failed to download x8${NC}"
+        rm -rf "$TMP_DIR"
+        return 1
+    fi
+}
+
 load_repos() {
     if [[ ! -f repos.txt ]]; then
         echo -e "${RED}repos.txt not found!${NC}"
@@ -113,6 +137,8 @@ install_tools() {
             echo -e "${GREEN}[✓] $binary already installed${NC}"
         fi
     done
+
+    install_x8
 
     echo -e "\nCloning GitHub repos to ~/bugbounty-tools:"
     mkdir -p "$HOME/bugbounty-tools"
