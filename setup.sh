@@ -4,7 +4,7 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-tools=(nmap git zsh curl wget jq htop go masscan x8)
+tools=(nmap git zsh curl wget jq htop go masscan x8 flinks)
 
 declare -A repos
 declare -a go_tools
@@ -98,6 +98,32 @@ check_status() {
     done
 }
 
+install_flinks() {
+    if command -v flinks >/dev/null; then
+        echo -e "${GREEN}[✓] flinks is already installed${NC}"
+        return 0
+    fi
+
+    local flinks_dir="$HOME/bugbounty-tools/FLinks"
+    if [[ ! -d "$flinks_dir" ]]; then
+        echo -e "${RED}FLinks directory not found. Please run option 2 first to clone the repository.${NC}"
+        return 1
+    fi
+
+    echo -e "${GREEN}Installing FLinks...${NC}"
+    cd "$flinks_dir" && {
+        chmod +x install.sh
+        ./install.sh
+        cd - > /dev/null
+        if command -v flinks >/dev/null; then
+            echo -e "${GREEN}[✓] flinks installed successfully!${NC}"
+        else
+            echo -e "${RED}Failed to install flinks${NC}"
+            return 1
+        fi
+    }
+}
+
 install_tools() {
     pkgmgr=$(detect_package_manager)
     if [[ $pkgmgr == "unknown" ]]; then
@@ -109,13 +135,37 @@ install_tools() {
     for tool in "${tools[@]}"; do
         if ! command -v "$tool" &> /dev/null; then
             echo -e "${GREEN}Installing $tool...${NC}"
-            case $pkgmgr in
-                apt) sudo apt update && sudo apt install -y "$tool" ;;
-                pacman) sudo pacman -Sy --noconfirm "$tool" ;;
-                dnf) sudo dnf install -y "$tool" ;;
-                zypper) sudo zypper install -y "$tool" ;;
-                brew) brew install "$tool" ;;
+            case $tool in
+                flinks)
+                    install_flinks
+                    ;;
+                x8)
+                    install_x8
+                    ;;
+                *)
+                    case $pkgmgr in
+                        apt) sudo apt update && sudo apt install -y "$tool" ;;
+                        pacman) sudo pacman -Sy --noconfirm "$tool" ;;
+                        dnf) sudo dnf install -y "$tool" ;;
+                        zypper) sudo zypper install -y "$tool" ;;
+                        brew) brew install "$tool" ;;
+                    esac
+                    ;;
             esac
+        fi
+    done
+
+    echo -e "\nCloning GitHub repos to ~/bugbounty-tools:"
+    mkdir -p "$HOME/bugbounty-tools"
+    for dir in "${!repos[@]}"; do
+        target="$HOME/bugbounty-tools/$dir"
+        repo_path="${repos[$dir]}"
+        repo_url="https://github.com/$repo_path.git"
+        if [[ ! -d "$target" ]]; then
+            echo -e "${GREEN}Cloning $repo_url...${NC}"
+            git clone "$repo_url" "$target"
+        else
+            echo -e "${GREEN}[✓] $dir already exists${NC}"
         fi
     done
 
@@ -135,22 +185,6 @@ install_tools() {
             go install "$tool"
         else
             echo -e "${GREEN}[✓] $binary already installed${NC}"
-        fi
-    done
-
-    install_x8
-
-    echo -e "\nCloning GitHub repos to ~/bugbounty-tools:"
-    mkdir -p "$HOME/bugbounty-tools"
-    for dir in "${!repos[@]}"; do
-        target="$HOME/bugbounty-tools/$dir"
-        repo_path="${repos[$dir]}"
-        repo_url="https://github.com/$repo_path.git"
-        if [[ ! -d "$target" ]]; then
-            echo -e "${GREEN}Cloning $repo_url...${NC}"
-            git clone "$repo_url" "$target"
-        else
-            echo -e "${GREEN}[✓] $dir already exists${NC}"
         fi
     done
 }
