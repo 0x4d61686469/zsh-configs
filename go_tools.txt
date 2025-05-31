@@ -1,11 +1,11 @@
-github.com/projectdiscovery/dnsx/cmd/dnsx@latest
-github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-github.com/projectdiscovery/httpx/cmd/httpx@latest
-github.com/tomnomnom/unfurl@latest
-github.com/tomnomnom/anew@latest
-github.com/tomnomnom/waybackurls@latest
-github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
-github.com/projectdiscovery/naabu/v2/cmd/naabu@latest
-github.com/projectdiscovery/katana/cmd/katana@latest
-github.com/ffuf/ffuf/v2@latest
-github.com/ImAyrix/fallparams@latest
+dnsx github.com/projectdiscovery/dnsx/cmd/dnsx@latest
+subfinder github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+httpx github.com/projectdiscovery/httpx/cmd/httpx@latest
+unfurl github.com/tomnomnom/unfurl@latest
+fallparams github.com/ImAyrix/fallparams@latest
+anew github.com/tomnomnom/anew@latest
+waybackurls github.com/tomnomnom/waybackurls@latest
+nuclei github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
+naabu github.com/projectdiscovery/naabu/v2/cmd/naabu@latest
+katana github.com/projectdiscovery/katana/cmd/katana@latest
+ffuf github.com/ffuf/ffuf/v2@latest

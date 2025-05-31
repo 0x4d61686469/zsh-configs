@@ -80,7 +80,9 @@ check_status() {
 
     echo -e "\nChecking Go tools:"
     for tool in "${go_tools[@]}"; do
-        binary=$(basename "${tool%%@*}")
+        # Split the line into binary name and package path
+        binary=$(echo "$tool" | awk '{print $1}')
+        package=$(echo "$tool" | awk '{print $2}')
         if command -v "$binary" &> /dev/null; then
             echo -e "${GREEN}[✓] $binary${NC}"
         else
@@ -179,10 +181,12 @@ install_tools() {
 
     echo -e "\nInstalling Go tools:"
     for tool in "${go_tools[@]}"; do
-        binary=$(basename "${tool%%@*}")
+        # Split the line into binary name and package path
+        binary=$(echo "$tool" | awk '{print $1}')
+        package=$(echo "$tool" | awk '{print $2}')
         if ! command -v "$binary" &> /dev/null; then
             echo -e "${GREEN}Installing $binary...${NC}"
-            go install "$tool"
+            go install "$package"
         else
             echo -e "${GREEN}[✓] $binary already installed${NC}"
         fi
