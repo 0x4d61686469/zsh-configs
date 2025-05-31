@@ -8,3 +8,4 @@ github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
 github.com/projectdiscovery/naabu/v2/cmd/naabu@latest
 github.com/projectdiscovery/katana/cmd/katana@latest
 github.com/ffuf/ffuf/v2@latest
+github.com/ImAyrix/fallparams@latest
