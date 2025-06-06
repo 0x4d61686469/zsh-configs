@@ -1,6 +1,7 @@
 0x4d61686469/0x4d61686469.github.io
 0x4d61686469/tools
 0x4d61686469/All-chars
+0x4d61686469/lists
 Sh1Yo/X9
 0xKayala/BackupKiller
 devanshbatham/robofinder
