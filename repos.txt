@@ -19,7 +19,6 @@ gotr00t0day/forbiddenpass
 r0oth3x49/ghauri
 internetwache/GitTools
 Q0120S/GoogleDorkGenerator
-HackTricks-wiki/hacktricks
 nahamsec/JSParser
 ticarpi/jwt_tool
 GerbenJavado/LinkFinder
