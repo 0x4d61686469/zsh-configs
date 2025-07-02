@@ -10,3 +10,4 @@ naabu github.com/projectdiscovery/naabu/v2/cmd/naabu@latest
 katana github.com/projectdiscovery/katana/cmd/katana@latest
 ffuf github.com/ffuf/ffuf/v2@latest
 asnmap github.com/projectdiscovery/asnmap/cmd/asnmap@latest
+cut-cdn github.com/ImAyrix/cut-cdn@latest
