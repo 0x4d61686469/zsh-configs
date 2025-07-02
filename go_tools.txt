@@ -11,3 +11,4 @@ katana github.com/projectdiscovery/katana/cmd/katana@latest
 ffuf github.com/ffuf/ffuf/v2@latest
 asnmap github.com/projectdiscovery/asnmap/cmd/asnmap@latest
 cut-cdn github.com/ImAyrix/cut-cdn@latest
+mapcidr github.com/projectdiscovery/mapcidr/cmd/mapcidr@latest
