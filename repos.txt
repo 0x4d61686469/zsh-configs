@@ -42,3 +42,4 @@ s0md3v/XSStrike
 0x4d61686469/configs
 0x4d61686469/burp-extensions
 0x4d61686469/templates
+blechschmidt/massdns
