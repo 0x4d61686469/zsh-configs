@@ -209,7 +209,7 @@ export PATH=$PATH:~/zsh-configs'
         echo -e "\n# Load custom zsh configs\n$SNIPPET" >> "$ZSHRC"
     fi
 
-    if grep -q "/usr/local/go/bin" "$ZSHRC"; then
+    if grep -q "~/go/bin" "$ZSHRC"; then
         echo -e "${GREEN}Go path already exists in .zshrc${NC}"
     else
         echo -e "${GREEN}Adding Go path to .zshrc...${NC}"
