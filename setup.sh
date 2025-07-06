@@ -200,7 +200,7 @@ add_zsh_configs() {
 done
 export PATH=$PATH:~/zsh-configs'
 
-    GO_PATH_SNIPPET='export PATH=$PATH:/usr/local/go/bin'
+    GO_PATH_SNIPPET='export PATH=$PATH:~/go/bin'
 
     if grep -q "zsh-configs" "$ZSHRC"; then
         echo -e "${GREEN}Zsh config already exists in .zshrc${NC}"
