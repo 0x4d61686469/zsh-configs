@@ -200,14 +200,25 @@ add_zsh_configs() {
 done
 export PATH=$PATH:~/zsh-configs'
 
+    GO_PATH_SNIPPET='export PATH=$PATH:/usr/local/go/bin'
+
     if grep -q "zsh-configs" "$ZSHRC"; then
         echo -e "${GREEN}Zsh config already exists in .zshrc${NC}"
     else
         echo -e "${GREEN}Adding zsh configs to .zshrc...${NC}"
         echo -e "\n# Load custom zsh configs\n$SNIPPET" >> "$ZSHRC"
-        echo -e "${GREEN}Done. Please restart your terminal or run 'source ~/.zshrc'${NC}"
     fi
+
+    if grep -q "/usr/local/go/bin" "$ZSHRC"; then
+        echo -e "${GREEN}Go path already exists in .zshrc${NC}"
+    else
+        echo -e "${GREEN}Adding Go path to .zshrc...${NC}"
+        echo -e "\n# Add Go binary to PATH\n$GO_PATH_SNIPPET" >> "$ZSHRC"
+    fi
+
+    echo -e "${GREEN}Done. Please restart your terminal or run 'source ~/.zshrc'${NC}"
 }
+
 
 main_menu() {
     load_repos || return
