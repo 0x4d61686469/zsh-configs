@@ -278,7 +278,7 @@ favicon() {
 python3 ~/zsh-configs/favicon.py "$@"
 }
 
-dns_brute_full () {
+dns_brute_full() {
 	echo "cleaning..."
 	rm -f "$1.wordlist $1.dns_brute $1.dns_gen"
 	echo "making static wordlist..."
