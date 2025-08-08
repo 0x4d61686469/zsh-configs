@@ -284,7 +284,7 @@ dns_brute_full() {
 	echo "making static wordlist..."
 	awk -v domain="$1" '{print $0"."domain}' "$WL_PATH/subdomains/assetnote-merged.txt" >> "$1.wordlist"
 	echo "making 4 chars wordlist..."
-	awk -v domain="$1" '{print $0"."domain}" "$WL_PATH/4-lower.txt" >> "$1.wordlist"
+	awk -v domain="$1" '{print $0"."domain}" "$WL_PATH/4-lower.txt" >> "$1.wordlist"'
 	echo "shuffledns static brute-force..."
 	shuffledns -list $1.wordlist -d $1 -r ~/.resolvers -m $(which massdns) -mode resolve -silent | tee $1.dns_brute 2>&1 > /dev/null
 	echo "[+] finished, total $(wc -l $1.dns_brute) resolved..."
