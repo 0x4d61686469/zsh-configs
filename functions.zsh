@@ -282,9 +282,9 @@ dns_brute_full() {
 	echo "cleaning..."
 	rm -f "$1.wordlist $1.dns_brute $1.dns_gen"
 	echo "making static wordlist..."
-	awk -v domain="$1" '{print $0"."domain}' "~/bugbounty-tools/lists/dns-lists/assetnote-merged.txt" >> "$1.wordlist"
+	awk -v domain="$1" '{print $0"."domain}' ~/bugbounty-tools/lists/dns-lists/assetnote-merged.txt >> "$1.wordlist"
 	echo "making 4 chars wordlist..."
-	awk -v domain="$1" '{print $0"."domain}" "~/bugbounty-tools/lists/dns-lists/4-lower.txt" >> "$1.wordlist"'
+	awk -v domain="$1" '{print $0"."domain}' ~/bugbounty-tools/lists/dns-lists/4-lower.txt >> "$1.wordlist"
 	echo "shuffledns static brute-force..."
 	shuffledns -list $1.wordlist -d $1 -r ~/bugbounty-tools/lists/dns-lists/.resolvers -m $(which massdns) -mode resolve -silent | tee $1.dns_brute 2>&1 > /dev/null
 	echo "[+] finished, total $(wc -l $1.dns_brute) resolved..."
