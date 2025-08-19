@@ -14,3 +14,4 @@ cut-cdn github.com/ImAyrix/cut-cdn@latest
 mapcidr github.com/projectdiscovery/mapcidr/cmd/mapcidr@latest
 shuffledns github.com/projectdiscovery/shuffledns/cmd/shuffledns@latest
 puredns github.com/d3mondev/puredns/v2@latest
+ShortNameScanner github.com/sw33tLie/sns@latest
