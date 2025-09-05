@@ -236,6 +236,7 @@ done
 export PATH=$PATH:~/zsh-configs'
 
     GO_PATH_SNIPPET='export PATH=$PATH:~/go/bin'
+    PIPX_PATH_SNIPPET='export PATH=$PATH:~/.local/bin'
 
     if grep -q "zsh-configs" "$ZSHRC"; then
         echo -e "${GREEN}Zsh config already exists in .zshrc${NC}"
@@ -251,6 +252,12 @@ export PATH=$PATH:~/zsh-configs'
         echo -e "\n# Add Go binary to PATH\n$GO_PATH_SNIPPET" >> "$ZSHRC"
     fi
 
+    if grep -q "~/.local/bin" "$ZSHRC"; then
+        echo -e "${GREEN}pipx path already exists in .zshrc${NC}"
+    else
+        echo -e "${GREEN}Adding pipx path to .zshrc...${NC}"
+        echo -e "\n# Add pipx binary to PATH\n$PIPX_PATH_SNIPPET" >> "$ZSHRC"
+    fi
     echo -e "${GREEN}Done. Please restart your terminal or run 'source ~/.zshrc'${NC}"
 }
 
