@@ -230,6 +230,8 @@ install_tools() {
 
 add_zsh_configs() {
     ZSHRC="$HOME/.zshrc"
+    ROOT_ZSHRC="/root/.zshrc"
+    USER_HOME="$HOME"
 
     add_if_missing() {
         local snippet="$1"
@@ -242,6 +244,17 @@ add_zsh_configs() {
         fi
     }
 
+add_if_missing_root() {
+        local snippet="$1"
+        local desc="$2"
+        if sudo grep -Fxq "$snippet" "$ROOT_ZSHRC"; then
+            echo -e "${GREEN}${desc} already exists in .zshrc${NC}"
+        else
+            echo -e "${GREEN}Adding ${desc} to .zshrc...${NC}"
+            echo -e "\n# ${desc}\n$snippet" | sudo tee -a "$ROOT_ZSHRC"
+        fi
+    }
+
     add_if_missing 'for file in $HOME/zsh-configs/*.zsh; do
     source "$file"
 done
@@ -250,7 +263,16 @@ export PATH=$PATH:$HOME/zsh-configs' "Load custom zsh configs"
     add_if_missing 'export PATH=$PATH:$HOME/go/bin' "Go path"
     add_if_missing 'export PATH=$PATH:$HOME/.local/bin' "pipx path"
 
-    echo -e "${GREEN}Done. Please restart your terminal or run 'source ~/.zshrc'${NC}"
+    # root .zshrc
+    add_if_missing_root "for file in $USER_HOME/zsh-configs/*.zsh; do
+    source "\$file"
+done
+export PATH=\$PATH:$USER_HOME/zsh-configs" "Load custom zsh configs"
+
+    add_if_missing_root "export PATH=\$PATH:$USER_HOME/go/bin" "Go path"
+    add_if_missing_root "export PATH=\$PATH:$USER_HOME/.local/bin" "pipx path"
+
+    echo -e "${GREEN}Done. Please restart your terminal'${NC}"
 }
 
 
