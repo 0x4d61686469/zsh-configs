@@ -20,3 +20,4 @@ inscope github.com/tomnomnom/hacks/inscope@latest
 tlsx github.com/projectdiscovery/tlsx/cmd/tlsx@latest
 amass github.com/owasp-amass/amass/v4/...@latest
 gau github.com/lc/gau/v2/cmd/gau@latest
+interactsh-client github.com/projectdiscovery/interactsh/cmd/interactsh-client@latest

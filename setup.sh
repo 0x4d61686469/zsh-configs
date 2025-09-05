@@ -192,7 +192,7 @@ install_tools() {
         fi
     done
 
-    echo -e "\nCloning GitHub repos to ~/bugbounty-tools:"
+    echo -e "\nCloning GitHub repos to $HOME/bugbounty-tools:"
     mkdir -p "$HOME/bugbounty-tools"
     for dir in "${!repos[@]}"; do
         target="$HOME/bugbounty-tools/$dir"
@@ -230,13 +230,13 @@ install_tools() {
 
 add_zsh_configs() {
     ZSHRC="$HOME/.zshrc"
-    SNIPPET='for file in ~/zsh-configs/*.zsh; do
+    SNIPPET='for file in $HOME/zsh-configs/*.zsh; do
     source "$file"
 done
-export PATH=$PATH:~/zsh-configs'
+export PATH=$PATH:$HOME/zsh-configs'
 
-    GO_PATH_SNIPPET='export PATH=$PATH:~/go/bin'
-    PIPX_PATH_SNIPPET='export PATH=$PATH:~/.local/bin'
+    GO_PATH_SNIPPET='export PATH=$PATH:$HOME/go/bin'
+    PIPX_PATH_SNIPPET='export PATH=$PATH:$HOME/.local/bin'
 
     if grep -q "zsh-configs" "$ZSHRC"; then
         echo -e "${GREEN}Zsh config already exists in .zshrc${NC}"
@@ -245,20 +245,20 @@ export PATH=$PATH:~/zsh-configs'
         echo -e "\n# Load custom zsh configs\n$SNIPPET" >> "$ZSHRC"
     fi
 
-    if grep -q "~/go/bin" "$ZSHRC"; then
+    if grep -q "$HOME/go/bin" "$ZSHRC"; then
         echo -e "${GREEN}Go path already exists in .zshrc${NC}"
     else
         echo -e "${GREEN}Adding Go path to .zshrc...${NC}"
         echo -e "\n# Add Go binary to PATH\n$GO_PATH_SNIPPET" >> "$ZSHRC"
     fi
 
-    if grep -q "~/.local/bin" "$ZSHRC"; then
+    if grep -q "$HOME/.local/bin" "$ZSHRC"; then
         echo -e "${GREEN}pipx path already exists in .zshrc${NC}"
     else
         echo -e "${GREEN}Adding pipx path to .zshrc...${NC}"
         echo -e "\n# Add pipx binary to PATH\n$PIPX_PATH_SNIPPET" >> "$ZSHRC"
     fi
-    echo -e "${GREEN}Done. Please restart your terminal or run 'source ~/.zshrc'${NC}"
+    echo -e "${GREEN}Done. Please restart your terminal or run 'source $HOME/.zshrc'${NC}"
 }
 
 
@@ -269,7 +269,7 @@ main_menu() {
     echo -e "\n${GREEN}Select an option:${NC}"
     echo "1. Check missing/installed tools and repos"
     echo "2. Install missing tools and clone repos"
-    echo "3. Add ~/zsh-configs to Zsh config"
+    echo "3. Add $HOME/zsh-configs to Zsh config"
     echo "q. Quit"
     read -p "Enter choice: " choice
 
