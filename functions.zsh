@@ -298,3 +298,7 @@ dns_brute_full() {
 	shuffledns -list $1.dns_gen -d $1 -r ~/bugbounty-tools/lists/dns-lists/.resolvers -m $(which massdns) -mode resolve -silent | anew $1.dns_brute 2>&1 > /dev/null
 	echo "[+] finished, total $(wc -l $1.dns_brute) resolved..."
 }
+
+subuniq() {
+cat | sed 's/\*\.//g' | tr '[:upper:]' '[:lower:]' | anew | inscope -s "*.$1"
+}
