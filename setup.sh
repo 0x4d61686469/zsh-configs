@@ -258,6 +258,7 @@ export PATH=$PATH:$HOME/zsh-configs'
         echo -e "${GREEN}Adding pipx path to .zshrc...${NC}"
         echo -e "\n# Add pipx binary to PATH\n$PIPX_PATH_SNIPPET" >> "$ZSHRC"
     fi
+
     echo -e "${GREEN}Done. Please restart your terminal or run 'source $HOME/.zshrc'${NC}"
 }
 
