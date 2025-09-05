@@ -4,7 +4,7 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-tools=(pipx nmap git zsh curl wget jq htop go masscan x8 flinks libpcap-dev git-lfs bbot)
+tools=(pipx nmap git zsh curl wget jq htop go masscan x8 flinks libpcap-dev git-lfs bbot uro)
 
 declare -A repos
 declare -a go_tools
@@ -140,6 +140,21 @@ install_bbot() {
     fi
 }
 
+install_uro() {
+    if command -v uro >/dev/null; then
+        echo -e "${GREEN}[✓] uro is already installed${NC}"
+        return 0
+    fi
+
+    pipx install uro
+    if command -v uro >/dev/null; then
+        echo -e "${GREEN}[✓] uro installed successfully!${NC}"
+    else
+        echo -e "${RED}Failed to install uro${NC}"
+        return 1
+    fi
+}
+
 install_tools() {
     pkgmgr=$(detect_package_manager)
     if [[ $pkgmgr == "unknown" ]]; then
@@ -160,6 +175,9 @@ install_tools() {
                     ;;
                 bbot)
                     install_bbot
+                    ;;
+                uro)
+                    install_uro
                     ;;
                 *)
                     case $pkgmgr in
