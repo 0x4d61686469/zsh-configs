@@ -4,34 +4,10 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-tools=(pipx nmap git zsh curl wget jq htop go masscan x8 flinks libpcap-dev git-lfs)
+tools=(pipx nmap git zsh curl wget jq htop go masscan x8 flinks libpcap-dev git-lfs bbot)
 
 declare -A repos
 declare -a go_tools
-
-install_x8() {
-    if command -v x8 >/dev/null; then
-        echo -e "${GREEN}[✓] x8 is already installed${NC}"
-        return 0
-    fi
-    
-    echo -e "${GREEN}Installing x8...${NC}"
-    TMP_DIR=$(mktemp -d)
-    echo -e "${GREEN}Downloading x8...${NC}"
-    if curl -L -o "$TMP_DIR/x8.gz" https://github.com/Sh1Yo/x8/releases/download/v4.3.0/x86_64-linux-x8.gz; then
-        echo -e "${GREEN}Extracting x8...${NC}"
-        gunzip "$TMP_DIR/x8.gz" &&
-        chmod +x "$TMP_DIR/x8" &&
-        echo -e "${GREEN}Moving x8 to /usr/local/bin/...${NC}"
-        sudo mv "$TMP_DIR/x8" /usr/local/bin/ &&
-        rm -rf "$TMP_DIR" &&
-        echo -e "${GREEN}✓ x8 installed successfully!${NC}"
-    else
-        echo -e "${RED}Failed to download x8${NC}"
-        rm -rf "$TMP_DIR"
-        return 1
-    fi
-}
 
 load_repos() {
     if [[ ! -f repos.txt ]]; then
@@ -100,6 +76,30 @@ check_status() {
     done
 }
 
+install_x8() {
+    if command -v x8 >/dev/null; then
+        echo -e "${GREEN}[✓] x8 is already installed${NC}"
+        return 0
+    fi
+    
+    TMP_DIR=$(mktemp -d)
+    echo -e "${GREEN}Downloading x8...${NC}"
+    if curl -L -o "$TMP_DIR/x8.gz" https://github.com/Sh1Yo/x8/releases/download/v4.3.0/x86_64-linux-x8.gz; then
+        echo -e "${GREEN}Extracting x8...${NC}"
+        gunzip "$TMP_DIR/x8.gz" &&
+        chmod +x "$TMP_DIR/x8" &&
+        echo -e "${GREEN}Moving x8 to /usr/local/bin/...${NC}"
+        sudo mv "$TMP_DIR/x8" /usr/local/bin/ &&
+        rm -rf "$TMP_DIR" &&
+        echo -e "${GREEN}✓ x8 installed successfully!${NC}"
+    else
+        echo -e "${RED}Failed to download x8${NC}"
+        rm -rf "$TMP_DIR"
+        return 1
+    fi
+}
+
+
 install_flinks() {
     if command -v flinks >/dev/null; then
         echo -e "${GREEN}[✓] flinks is already installed${NC}"
@@ -112,7 +112,6 @@ install_flinks() {
         return 1
     fi
 
-    echo -e "${GREEN}Installing FLinks...${NC}"
     cd "$flinks_dir" && {
         chmod +x install.sh
         ./install.sh
@@ -124,6 +123,21 @@ install_flinks() {
             return 1
         fi
     }
+}
+
+install_bbot() {
+    if command -v bbot >/dev/null; then
+        echo -e "${GREEN}[✓] bbot is already installed${NC}"
+        return 0
+    fi
+
+    pipx install bbot
+    if command -v bbot >/dev/null; then
+        echo -e "${GREEN}[✓] bbot installed successfully!${NC}"
+    else
+        echo -e "${RED}Failed to install bbot${NC}"
+        return 1
+    fi
 }
 
 install_tools() {
@@ -143,6 +157,9 @@ install_tools() {
                     ;;
                 x8)
                     install_x8
+                    ;;
+                bbot)
+                    install_bbot
                     ;;
                 *)
                     case $pkgmgr in
