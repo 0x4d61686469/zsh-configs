@@ -230,37 +230,29 @@ install_tools() {
 
 add_zsh_configs() {
     ZSHRC="$HOME/.zshrc"
-    SNIPPET='for file in $HOME/zsh-configs/*.zsh; do
+
+    add_if_missing() {
+        local snippet="$1"
+        local desc="$2"
+        if grep -Fxq "$snippet" "$ZSHRC"; then
+            echo -e "${GREEN}${desc} already exists in .zshrc${NC}"
+        else
+            echo -e "${GREEN}Adding ${desc} to .zshrc...${NC}"
+            echo -e "\n# ${desc}\n$snippet" >> "$ZSHRC"
+        fi
+    }
+
+    add_if_missing 'for file in $HOME/zsh-configs/*.zsh; do
     source "$file"
 done
-export PATH=$PATH:$HOME/zsh-configs'
+export PATH=$PATH:$HOME/zsh-configs' "Load custom zsh configs"
 
-    GO_PATH_SNIPPET='export PATH=$PATH:$HOME/go/bin'
-    PIPX_PATH_SNIPPET='export PATH=$PATH:$HOME/.local/bin'
+    add_if_missing 'export PATH=$PATH:$HOME/go/bin' "Go path"
+    add_if_missing 'export PATH=$PATH:$HOME/.local/bin' "pipx path"
 
-    if grep -q "zsh-configs" "$ZSHRC"; then
-        echo -e "${GREEN}Zsh config already exists in .zshrc${NC}"
-    else
-        echo -e "${GREEN}Adding zsh configs to .zshrc...${NC}"
-        echo -e "\n# Load custom zsh configs\n$SNIPPET" >> "$ZSHRC"
-    fi
-
-    if grep -q "$HOME/go/bin" "$ZSHRC"; then
-        echo -e "${GREEN}Go path already exists in .zshrc${NC}"
-    else
-        echo -e "${GREEN}Adding Go path to .zshrc...${NC}"
-        echo -e "\n# Add Go binary to PATH\n$GO_PATH_SNIPPET" >> "$ZSHRC"
-    fi
-
-    if grep -q "$HOME/.local/bin" "$ZSHRC"; then
-        echo -e "${GREEN}pipx path already exists in .zshrc${NC}"
-    else
-        echo -e "${GREEN}Adding pipx path to .zshrc...${NC}"
-        echo -e "\n# Add pipx binary to PATH\n$PIPX_PATH_SNIPPET" >> "$ZSHRC"
-    fi
-
-    echo -e "${GREEN}Done. Please restart your terminal or run 'source $HOME/.zshrc'${NC}"
+    echo -e "${GREEN}Done. Please restart your terminal or run 'source ~/.zshrc'${NC}"
 }
+
 
 
 main_menu() {
