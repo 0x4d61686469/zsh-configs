@@ -16,3 +16,4 @@ shuffledns github.com/projectdiscovery/shuffledns/cmd/shuffledns@latest
 puredns github.com/d3mondev/puredns/v2@latest
 ShortNameScanner github.com/sw33tLie/sns@latest
 ShortScan github.com/bitquark/shortscan/cmd/shortscan@latest
+inscope github.com/tomnomnom/hacks/inscope@latest
