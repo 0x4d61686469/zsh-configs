@@ -200,7 +200,7 @@ install_tools() {
         repo_url="https://github.com/$repo_path.git"
         if [[ ! -d "$target" ]]; then
             echo -e "${GREEN}Cloning $repo_url...${NC}"
-            git clone "$repo_url" "$target"
+            gh repo clone "$repo_path" "$target"
         else
             echo -e "${GREEN}[✓] $dir already exists${NC}"
         fi
