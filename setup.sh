@@ -115,6 +115,7 @@ install_flinks() {
     cd "$flinks_dir" && {
         chmod +x install.sh
         ./install.sh
+	sudo cp flinks.sh /usr/bin/flinks
         cd - > /dev/null
         if command -v flinks >/dev/null; then
             echo -e "${GREEN}[✓] flinks installed successfully!${NC}"
