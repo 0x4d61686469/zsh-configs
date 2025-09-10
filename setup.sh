@@ -194,6 +194,7 @@ install_tools() {
 
     echo -e "\nCloning GitHub repos to $HOME/bugbounty-tools:"
     mkdir -p "$HOME/bugbounty-tools"
+    git config --global url."git@github.com:".insteadOf "https://github.com/"
     for dir in "${!repos[@]}"; do
         target="$HOME/bugbounty-tools/$dir"
         repo_path="${repos[$dir]}"
