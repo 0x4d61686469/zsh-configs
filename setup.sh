@@ -4,7 +4,7 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-tools=(pipx nmap git zsh curl wget jq htop go masscan x8 flinks libpcap-dev git-lfs bbot uro)
+tools=(pipx nmap git zsh curl wget jq htop go masscan x8 flinks git-lfs bbot uro)
 
 declare -A repos
 declare -a go_tools
