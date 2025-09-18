@@ -177,12 +177,12 @@ crtsh $domain | grep -v "*" | sort -u | anew ${domain}.subs
 echo "[Subfinder]"
 subfinder -d $domain -all -silent | anew ${domain}.subs
 echo "[abuseipdb]"
-abuseipdb $domain | anew ${domain}.subs
+abuseipdb $domain $2 | anew ${domain}.subs
 }
 
 
 abuseipdb() {
-	curl -s "https://www.abuseipdb.com/whois/$1" -H "user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" -b "abuseipdb_session=YOUR_SESSION" | grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox,.venv,venv} -E '<li>\w.*</li>' | sed -E 's/<\/?li>//g' | sed -e "s/$/.$1/"
+	curl -s "https://www.abuseipdb.com/whois/$1" -H "user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" -b "abuseipdb_session=$2" | grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox,.venv,venv} -E '<li>\w.*</li>' | sed -E 's/<\/?li>//g' | sed -e "s/$/.$1/"
 }
 
 
