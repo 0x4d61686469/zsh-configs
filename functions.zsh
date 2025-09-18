@@ -173,7 +173,7 @@ get_subs() {
 domain=$1
 echo "[Domain] = $1"
 echo "[crtsh]"
-crtsh $domain | grep -v "*" | sort -u > ${ddomain}.subs
+crtsh $domain | grep -v "*" | sort -u > ${domain}.subs
 echo "[Subfinder]"
 subfinder -d $domain -all -silent | anew ${domain}.subs
 echo "[abuseipdb]"
